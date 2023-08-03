@@ -1,6 +1,6 @@
 fun main(args: Array<String>) {
-    val contaJoao = Conta()
-    val contaAna = Conta()
+    val contaJoao = Conta(titular = "João", numero = 1001)
+    val contaAna = Conta(titular = "Ana", numero = 2002)
 
     contaJoao.deposita(100.0)
     contaJoao.transfere(contaAna, 50.0)
@@ -9,26 +9,27 @@ fun main(args: Array<String>) {
     println(contaAna.saldo)
 }
 
-class Conta {
-     var titular = "João"
-     var numero = 0
-     var saldo = 0.0
-         set(valor) {
-            field = valor
-         }
-         get
+class Conta(
+    var titular: String,
+    val numero: Int = 1000
+) {
+    var saldo = 0.0
+        private set
 
     fun deposita(valor: Double) {
-        this.saldo += valor
+        if (valor > 0) {
+            this.saldo += valor
+        }
+
     }
 
     fun saca(valor: Double) {
-        if(saldo >= valor) {
+        if (saldo >= valor) {
             this.saldo -= valor
         }
     }
 
-    fun transfere(destino: Conta,valor: Double): Boolean {
+    fun transfere(destino: Conta, valor: Double): Boolean {
         if (saldo >= valor) {
             saldo -= valor
             destino.deposita(valor)
